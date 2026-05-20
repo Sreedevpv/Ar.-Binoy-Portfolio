@@ -572,7 +572,54 @@
     }
 
     /* ============================================================
-       16. NAVBAR — scroll-reactive background
+       16. MOBILE NAVIGATION
+       ============================================================ */
+
+    function initMobileNav() {
+        var navbar = document.getElementById('navbar');
+        if (!navbar || navbar.querySelector('.nav-toggle')) return;
+
+        var navLinks = navbar.querySelector('.nav-links');
+        if (!navLinks) return;
+
+        if (!navLinks.id) navLinks.id = 'primary-navigation';
+
+        var toggle = document.createElement('button');
+        toggle.className = 'nav-toggle';
+        toggle.type = 'button';
+        toggle.setAttribute('aria-label', 'Open navigation menu');
+        toggle.setAttribute('aria-controls', navLinks.id);
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.innerHTML = '<span class="nav-toggle-line"></span><span class="nav-toggle-line"></span><span class="nav-toggle-line"></span>';
+
+        navbar.insertBefore(toggle, navLinks);
+
+        function setMenu(open) {
+            toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+            toggle.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+            navLinks.classList.toggle('is-open', open);
+            document.body.classList.toggle('nav-open', open);
+        }
+
+        toggle.addEventListener('click', function () {
+            setMenu(toggle.getAttribute('aria-expanded') !== 'true');
+        });
+
+        navLinks.addEventListener('click', function (e) {
+            if (e.target.closest('a')) setMenu(false);
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') setMenu(false);
+        });
+
+        window.addEventListener('resize', function () {
+            if (window.innerWidth > 768) setMenu(false);
+        });
+    }
+
+    /* ============================================================
+       17. NAVBAR — scroll-reactive background
        ============================================================ */
 
     function initNavbar() {
@@ -589,7 +636,7 @@
     }
 
     /* ============================================================
-       17. CUSTOM CURSOR
+       18. CUSTOM CURSOR
        ============================================================ */
 
     function initCustomCursor() {
@@ -667,7 +714,7 @@
     }
 
     /* ============================================================
-       18. PAGE TRANSITIONS — cream overlay wipe
+       19. PAGE TRANSITIONS — cream overlay wipe
        ============================================================ */
 
     function initPageTransitions() {
@@ -735,7 +782,7 @@
     }
 
     /* ============================================================
-       19. CONTACT BLOCKS STAGGER
+       20. CONTACT BLOCKS STAGGER
        ============================================================ */
 
     function initContactBlocks() {
@@ -746,7 +793,7 @@
     }
 
     /* ============================================================
-       20. SAFETY NET — ensure content always becomes visible
+       21. SAFETY NET — ensure content always becomes visible
        ============================================================ */
 
     function initSafetyNet() {
@@ -783,6 +830,7 @@
        ============================================================ */
 
     document.addEventListener('DOMContentLoaded', function () {
+        initMobileNav();
         initNavbar();
         initHeroSequence();
         initContactHero();
