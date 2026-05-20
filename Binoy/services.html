@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Process & Services — Ar. Binoy K.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="animations.css">
+    <style>
+        :root {
+            --color-bg: #f4f2ed;
+            --color-text: #1c1b1b;
+            --color-accent: #8c7b5e;
+            --color-muted: #a1a1a1;
+            --color-line: rgba(28, 27, 27, 0.12);
+            --color-dark: #1c1c1a;
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --font-sans: 'Inter', -apple-system, sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            font-family: var(--font-sans);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── Navbar ── */
+        .navbar {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            padding: 20px 4rem; display: flex; justify-content: space-between; align-items: center;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            border-bottom: 1px solid transparent;
+        }
+        .navbar.scrolled {
+            background-color: rgba(244, 242, 237, 0.92);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border-bottom-color: var(--color-line);
+        }
+        .nav-logo { font-family: var(--font-serif); font-size: 20px; color: var(--color-text); text-decoration: none; letter-spacing: -0.01em; }
+        .nav-links { display: flex; gap: 32px; list-style: none; }
+        .nav-links a { font-family: var(--font-sans); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-text); text-decoration: none; position: relative; padding-bottom: 4px; }
+        .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px; background-color: var(--color-text); transform: scaleX(0); transform-origin: left; transition: transform 0.25s ease; }
+        .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
+        .nav-links a.active { color: var(--color-accent); }
+        .nav-links a.active::after { background-color: var(--color-accent); }
+
+        /* ── Section Shared ── */
+        .section { padding: 8rem 4rem; }
+        .section-label {
+            font-family: var(--font-sans); font-size: 11px; font-weight: 600;
+            letter-spacing: 0.15em; text-transform: uppercase;
+            color: var(--color-accent); margin-bottom: 16px;
+        }
+        .section-heading {
+            font-family: var(--font-serif); font-size: 48px; font-weight: 400;
+            font-style: italic; line-height: 1.2; color: var(--color-text); margin-bottom: 24px;
+        }
+        .section-body {
+            font-family: var(--font-sans); font-size: 16px; line-height: 1.7;
+            color: var(--color-muted); max-width: 680px;
+        }
+        .section-line { width: 100%; height: 1px; background-color: var(--color-line); margin: 24px 0; }
+
+        /* ── Design Process Hero ── */
+        .process-hero {
+            padding: 180px 4rem 4rem;
+        }
+
+        /* ── Timeline ── */
+        .timeline-wrapper {
+            position: relative;
+            padding: 4rem 4rem 5rem;
+        }
+        .timeline-line {
+            position: absolute;
+            top: calc(4rem + 8px);
+            left: 4rem;
+            right: 4rem;
+            height: 2px;
+            background-color: var(--color-accent);
+        }
+        .timeline-steps {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 0;
+            position: relative;
+        }
+        .timeline-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 0 12px;
+            cursor: default;
+        }
+        .step-node {
+            width: 18px; height: 18px;
+            border: 2px solid var(--color-accent);
+            border-radius: 50%;
+            background-color: var(--color-bg);
+            position: relative;
+            z-index: 1;
+            transition: background-color 0.25s ease, transform 0.25s ease;
+        }
+        .timeline-step:hover .step-node {
+            background-color: var(--color-accent);
+            transform: scale(1.2);
+        }
+        .step-dash {
+            width: 1px; height: 28px;
+            border-left: 1px dashed var(--color-accent);
+            opacity: 0.4;
+            margin-top: 0;
+            transition: opacity 0.3s ease;
+        }
+        .timeline-step:hover .step-dash {
+            opacity: 1;
+        }
+        .step-number {
+            font-family: var(--font-sans); font-size: 10px; font-weight: 600;
+            letter-spacing: 0.1em; color: var(--color-accent);
+            margin-top: 12px; margin-bottom: 6px;
+        }
+        .step-title {
+            font-family: var(--font-serif); font-size: 16px; font-weight: 400;
+            color: var(--color-text); margin-bottom: 8px;
+            transition: color 0.2s ease;
+        }
+        .timeline-step:hover .step-title { color: var(--color-accent); }
+        .step-desc {
+            font-family: var(--font-sans); font-size: 12px; line-height: 1.5;
+            color: var(--color-muted);
+        }
+
+        /* ── Services Grid ── */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border-top: 1px solid var(--color-line);
+            border-left: 1px solid var(--color-line);
+        }
+        .service-cell {
+            padding: 3rem 2rem;
+            border-right: 1px solid var(--color-line);
+            border-bottom: 1px solid var(--color-line);
+            position: relative;
+            overflow: hidden;
+            cursor: default;
+            transition: color 0.25s ease;
+        }
+        .service-cell::before {
+            content: '';
+            position: absolute; bottom: 0; left: 0; right: 0;
+            height: 100%;
+            background-color: var(--color-dark);
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 0;
+        }
+        .service-cell:hover::before { transform: scaleY(1); }
+        .service-cell:hover { color: var(--color-bg); }
+        .service-cell > * { position: relative; z-index: 1; }
+        .service-number {
+            font-family: var(--font-sans); font-size: 11px; font-weight: 600;
+            letter-spacing: 0.1em; color: var(--color-muted); margin-bottom: 16px;
+            transition: transform 0.2s ease, color 0.25s ease;
+        }
+        .service-cell:hover .service-number { transform: translateY(-4px); color: rgba(244,242,237,0.5); }
+        .service-title {
+            font-family: var(--font-serif); font-size: 22px; font-weight: 400;
+            margin-bottom: 12px; transition: color 0.25s ease;
+        }
+        .service-cell:hover .service-title { color: var(--color-bg); }
+        .service-desc {
+            font-family: var(--font-sans); font-size: 13px; line-height: 1.6;
+            color: var(--color-muted); transition: color 0.25s ease;
+        }
+        .service-cell:hover .service-desc { color: rgba(244,242,237,0.6); }
+
+        /* ── CTA Link ── */
+        .cta-row {
+            display: flex; justify-content: flex-end;
+            padding: 2rem 4rem 0;
+        }
+        .cta-link {
+            font-family: var(--font-sans); font-size: 11px; font-weight: 600;
+            letter-spacing: 0.1em; text-transform: uppercase;
+            color: var(--color-text); text-decoration: none;
+            display: inline-flex; align-items: center; gap: 8px;
+            position: relative; padding-bottom: 4px;
+            transition: color 0.25s ease;
+        }
+        .cta-link::after {
+            content: ''; position: absolute; bottom: 0; left: 0;
+            width: 100%; height: 1px; background-color: var(--color-text);
+            transform: scaleX(0); transform-origin: left;
+            transition: transform 0.25s ease;
+        }
+        .cta-link:hover::after { transform: scaleX(1); }
+        .cta-link:hover { color: var(--color-accent); }
+        .cta-link:hover::after { background-color: var(--color-accent); }
+        .cta-arrow {
+            display: inline-block;
+            transition: transform 0.25s ease;
+            font-size: 14px;
+        }
+        .cta-link:hover .cta-arrow { transform: translateX(4px); }
+
+        /* ── Footer ── */
+        .footer {
+            padding: 40px 4rem;
+            border-top: 1px solid var(--color-line);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .footer-text {
+            font-family: var(--font-sans); font-size: 11px;
+            color: var(--color-muted); letter-spacing: 0.05em;
+        }
+        .footer-links { display: flex; gap: 24px; }
+        .footer-links a {
+            font-family: var(--font-sans); font-size: 11px; font-weight: 600;
+            letter-spacing: 0.1em; text-transform: uppercase;
+            color: var(--color-muted); text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        .footer-links a:hover { color: var(--color-text); }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .process-hero { padding: 120px 1.5rem 2rem; }
+            .section-heading { font-size: 32px; }
+            .section { padding: 4rem 1.5rem; }
+            .timeline-wrapper { padding: 2rem 1.5rem 3rem; }
+            .timeline-line { left: 1.5rem; right: 1.5rem; display: none; }
+            .timeline-steps { grid-template-columns: repeat(2, 1fr); gap: 32px; padding: 0; }
+            .step-dash { display: none; }
+            .services-grid { grid-template-columns: 1fr; }
+            .cta-row { padding: 2rem 1.5rem 0; }
+            .navbar { padding: 16px 1.5rem; }
+            .footer { flex-direction: column; gap: 16px; padding: 24px 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar" id="navbar" data-anim="navbar-enter">
+        <a href="index.html" class="nav-logo">Ar. Binoy K.</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="project.html">Works</a></li>
+            <li><a href="services.html" class="active">Services</a></li>
+            <li><a href="skills.html">Skills</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- ═══ Section 1: Design Process ═══ -->
+    <section class="process-hero">
+        <p class="section-label" data-anim="label-draft">DESIGN PROCESS</p>
+        <h1 class="section-heading" data-anim="heading-reveal">From first sketch to final structure.</h1>
+        <p class="section-body" data-anim="body-reveal">Every project begins with listening. We translate your vision into spaces that are functional, beautiful, and enduring — through a rigorous six-stage process.</p>
+    </section>
+
+    <!-- ═══ Timeline ═══ -->
+    <div class="timeline-wrapper">
+        <div class="timeline-line" data-anim="line-draw"></div>
+        <div class="timeline-steps">
+            <div class="timeline-step" data-anim="fade-up">
+                <div class="step-node"></div>
+                <div class="step-dash"></div>
+                <span class="step-number">01.</span>
+                <span class="step-title">Brief</span>
+                <span class="step-desc">Understanding client needs, site context &amp; budget</span>
+            </div>
+            <div class="timeline-step" data-anim="fade-up">
+                <div class="step-node"></div>
+                <div class="step-dash"></div>
+                <span class="step-number">02.</span>
+                <span class="step-title">Concept</span>
+                <span class="step-desc">Sketches, moodboards &amp; spatial ideas</span>
+            </div>
+            <div class="timeline-step" data-anim="fade-up">
+                <div class="step-node"></div>
+                <div class="step-dash"></div>
+                <span class="step-number">03.</span>
+                <span class="step-title">Schematic</span>
+                <span class="step-desc">Refined plans, sections &amp; 3D massing</span>
+            </div>
+            <div class="timeline-step" data-anim="fade-up">
+                <div class="step-node"></div>
+                <div class="step-dash"></div>
+                <span class="step-number">04.</span>
+                <span class="step-title">Development</span>
+                <span class="step-desc">Material selection, structure &amp; services</span>
+            </div>
+            <div class="timeline-step" data-anim="fade-up">
+                <div class="step-node"></div>
+                <div class="step-dash"></div>
+                <span class="step-number">05.</span>
+                <span class="step-title">Documentation</span>
+                <span class="step-desc">Working drawings &amp; BOQ for approvals</span>
+            </div>
+            <div class="timeline-step" data-anim="fade-up">
+                <div class="step-node"></div>
+                <div class="step-dash"></div>
+                <span class="step-number">06.</span>
+                <span class="step-title">Execution</span>
+                <span class="step-desc">Site supervision &amp; quality control</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ Divider ═══ -->
+    <div style="padding: 0 4rem;">
+        <div class="section-line" data-anim="line-draw"></div>
+    </div>
+
+    <!-- ═══ Section 2: Services ═══ -->
+    <section class="section" id="services">
+        <p class="section-label" data-anim="label-draft">SERVICES</p>
+        <h2 class="section-heading" data-anim="heading-reveal">What I offer.</h2>
+        <div class="section-line" data-anim="line-draw"></div>
+
+        <div class="services-grid">
+            <div class="service-cell" data-anim="fade-up">
+                <span class="service-number">01</span>
+                <h3 class="service-title">Architectural Design</h3>
+                <p class="service-desc">Full building design from concept to completion</p>
+            </div>
+            <div class="service-cell" data-anim="fade-up">
+                <span class="service-number">02</span>
+                <h3 class="service-title">Interior Design</h3>
+                <p class="service-desc">Space planning, material palette, lighting &amp; furniture</p>
+            </div>
+            <div class="service-cell" data-anim="fade-up">
+                <span class="service-number">03</span>
+                <h3 class="service-title">3D Visualization</h3>
+                <p class="service-desc">Photorealistic renders and walkthroughs</p>
+            </div>
+            <div class="service-cell" data-anim="fade-up">
+                <span class="service-number">04</span>
+                <h3 class="service-title">Site Planning</h3>
+                <p class="service-desc">Master planning, setback analysis, landscape integration</p>
+            </div>
+            <div class="service-cell" data-anim="fade-up">
+                <span class="service-number">05</span>
+                <h3 class="service-title">Construction Docs</h3>
+                <p class="service-desc">Detailed working drawings, schedules &amp; BOQ</p>
+            </div>
+            <div class="service-cell" data-anim="fade-up">
+                <span class="service-number">06</span>
+                <h3 class="service-title">Project Management</h3>
+                <p class="service-desc">End-to-end coordination</p>
+            </div>
+        </div>
+
+        <div class="cta-row">
+            <a href="contact.html" class="cta-link" data-anim="fade-up">Start a Project <span class="cta-arrow">→</span></a>
+        </div>
+    </section>
+
+    <!-- ═══ Footer ═══ -->
+    <footer class="footer">
+        <p class="footer-text">© 2024 AR. BINOY K. ARCHITECTS. ALL RIGHTS RESERVED.</p>
+        <div class="footer-links">
+            <a href="#">LinkedIn</a>
+            <a href="#">Instagram</a>
+            <a href="contact.html">Contact</a>
+            <a href="#">Journal</a>
+        </div>
+    </footer>
+
+    <script src="animations.js" defer></script>
+</body>
+</html>

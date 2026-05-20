@@ -1,0 +1,833 @@
+/* ================================================================
+   ANIMATIONS.CSS — Ar. Binoy K. Portfolio Motion System
+   "The weight of concrete, the precision of a drafted line."
+   ================================================================ */
+
+/* --- Design Tokens --- */
+:root {
+    --ease-arch: cubic-bezier(0.16, 1, 0.3, 1);
+    --dur-micro: 400ms;
+    --dur-reveal: 700ms;
+    --dur-hero: 1200ms;
+}
+
+/* ================================================================
+   1. BASE HIDDEN STATES
+   ================================================================ */
+
+[data-anim] {
+    opacity: 0;
+    will-change: transform, opacity;
+}
+
+/* Clip-path / scale elements use their own reveal — keep opacity 1 */
+/* hero-words: parent must be visible; per-word opacity is handled by .hero-word spans */
+[data-anim="portrait-reveal"],
+[data-anim="hero-words"],
+[data-anim="line-draw"],
+[data-anim="line-draw-v"],
+[data-anim="timeline-draw"],
+[data-anim="divider-draw"],
+[data-anim="step-node"] {
+    opacity: 1;
+}
+
+/* ================================================================
+   2. HERO ANIMATIONS — Page Load Sequence
+   ================================================================ */
+
+/* 2a. Navbar — slide down from -60px, 800ms, delay 200ms */
+[data-anim="navbar-enter"] {
+    transform: translateY(-60px);
+    transition: transform 800ms var(--ease-arch),
+                opacity 800ms var(--ease-arch);
+}
+[data-anim="navbar-enter"].in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 2b. Hero heading — each word fades up individually */
+.hero-word {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: transform var(--dur-reveal) var(--ease-arch),
+                opacity var(--dur-reveal) var(--ease-arch);
+}
+.hero-word.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 2c. Hero subtext (location label) */
+[data-anim="hero-subtext"] {
+    transition: opacity 600ms var(--ease-arch);
+}
+[data-anim="hero-subtext"].in-view {
+    opacity: 1;
+}
+
+/* 2d. Education line — slides from left */
+[data-anim="hero-education"] {
+    transform: translateX(-20px);
+    transition: transform var(--dur-reveal) var(--ease-arch),
+                opacity var(--dur-reveal) var(--ease-arch);
+}
+[data-anim="hero-education"].in-view {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* 2e. Social links — sequential fade in */
+[data-anim="hero-social"] {
+    transform: translateY(10px);
+    transition: opacity 500ms var(--ease-arch),
+                transform 500ms var(--ease-arch);
+}
+[data-anim="hero-social"].in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 2f. Portrait — clip-path bottom-to-top wipe, 1000ms */
+[data-anim="portrait-reveal"] {
+    clip-path: inset(100% 0 0 0);
+    transition: clip-path 1000ms var(--ease-arch);
+}
+[data-anim="portrait-reveal"].in-view {
+    clip-path: inset(0 0 0 0);
+}
+
+/* 2g. Stats — fade up with stagger */
+[data-anim="stat-reveal"] {
+    transform: translateY(20px);
+    transition: transform 500ms var(--ease-arch),
+                opacity 500ms var(--ease-arch);
+}
+[data-anim="stat-reveal"].in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ================================================================
+   3. SCROLL-TRIGGERED REVEALS
+   ================================================================ */
+
+/* 3a. Section label — letter-spacing drafting effect */
+[data-anim="label-draft"] {
+    letter-spacing: 0 !important;
+    transition: letter-spacing var(--dur-reveal) var(--ease-arch),
+                opacity var(--dur-reveal) var(--ease-arch);
+}
+[data-anim="label-draft"].in-view {
+    opacity: 1;
+    letter-spacing: 2px !important;
+}
+
+/* 3b. Section heading — translate up 60px */
+[data-anim="heading-reveal"] {
+    transform: translateY(60px);
+    transition: transform var(--dur-reveal) var(--ease-arch),
+                opacity var(--dur-reveal) var(--ease-arch);
+}
+[data-anim="heading-reveal"].in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 3c. Body paragraphs — translate up 30px, 500ms */
+[data-anim="body-reveal"] {
+    transform: translateY(30px);
+    transition: transform 500ms var(--ease-arch),
+                opacity 500ms var(--ease-arch);
+}
+[data-anim="body-reveal"].in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 3d. Horizontal line — draw left to right via scaleX */
+[data-anim="line-draw"] {
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 600ms var(--ease-arch);
+}
+[data-anim="line-draw"].in-view {
+    transform: scaleX(1);
+}
+
+/* 3e. Vertical line — draw top to bottom via scaleY */
+[data-anim="line-draw-v"] {
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 500ms var(--ease-arch);
+}
+[data-anim="line-draw-v"].in-view {
+    transform: scaleY(1);
+}
+
+/* 3f. Generic fade-up */
+[data-anim="fade-up"] {
+    transform: translateY(30px);
+    transition: transform 600ms var(--ease-arch),
+                opacity 600ms var(--ease-arch);
+}
+[data-anim="fade-up"].in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ================================================================
+   4. NAVBAR ENHANCEMENTS
+   ================================================================ */
+
+/* Logo hover — subtle italic skew, typographic nod */
+.nav-logo {
+    transition: transform 200ms var(--ease-arch) !important;
+}
+.nav-logo:hover {
+    transform: skewX(-3deg);
+}
+
+/* Refine nav link underline easing */
+.nav-links a::after {
+    transition: transform 250ms var(--ease-arch) !important;
+}
+
+/* ================================================================
+   5. WORKS / PROJECT LIST
+   ================================================================ */
+
+/* Work row scroll reveal */
+[data-anim="work-row-reveal"] {
+    transform: translateY(20px);
+    transition: transform 500ms var(--ease-arch),
+                opacity 500ms var(--ease-arch);
+}
+[data-anim="work-row-reveal"].in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Work row top border — draws on scroll */
+.work-row.anim-ready {
+    border-top-color: transparent !important;
+}
+.work-row.anim-ready::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: rgba(28, 27, 27, 0.12);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 400ms var(--ease-arch);
+}
+.work-row.anim-ready.in-view::after {
+    transform: scaleX(1);
+}
+
+/* Work row hover refinement — use architectural easing */
+.work-row::before {
+    transition: transform 300ms var(--ease-arch) !important;
+}
+.work-number {
+    transition: transform 250ms var(--ease-arch), color 300ms var(--ease-arch) !important;
+}
+.work-arrow {
+    transition: opacity 250ms var(--ease-arch), transform 250ms var(--ease-arch) !important;
+}
+
+/* Ongoing badge pulse */
+@keyframes pulse-badge {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+}
+.work-status.ongoing {
+    animation: pulse-badge 2s ease-in-out infinite;
+}
+
+/* ================================================================
+   6. PROJECT DETAIL PAGE
+   ================================================================ */
+
+/* Ken Burns — barely perceptible scale on hero image, 8s */
+@keyframes ken-burns {
+    from { transform: scale(1); }
+    to { transform: scale(1.04); }
+}
+.project-hero-img {
+    animation: ken-burns 8s var(--ease-arch) forwards;
+}
+
+/* Title halves — slide from opposite sides */
+.title-half-left {
+    display: inline-block;
+    opacity: 0;
+    transform: translateX(-100px);
+    transition: transform 1000ms var(--ease-arch),
+                opacity 1000ms var(--ease-arch);
+    transition-delay: 600ms;
+}
+.title-half-right {
+    display: inline-block;
+    opacity: 0;
+    transform: translateX(100px);
+    transition: transform 1000ms var(--ease-arch),
+                opacity 1000ms var(--ease-arch);
+    transition-delay: 600ms;
+}
+.title-half-left.in-view,
+.title-half-right.in-view {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Photo overlay — dark cover wipes upward */
+.photo-overlay {
+    transition: transform 800ms var(--ease-arch);
+}
+.photo-overlay.revealed {
+    transform: translateY(-100%);
+}
+
+/* Photo carousel crossfade */
+.photo-main img {
+    transition: opacity 400ms var(--ease-arch),
+                transform 400ms var(--ease-arch);
+}
+
+/* Thumbnail strip slide-in */
+[data-anim="thumb-slide"] {
+    transform: translateX(60px);
+    transition: transform 500ms var(--ease-arch),
+                opacity 500ms var(--ease-arch);
+}
+[data-anim="thumb-slide"].in-view {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Metadata rows — fade in with stagger */
+[data-anim="meta-row"] {
+    transform: translateY(15px);
+    transition: transform 400ms var(--ease-arch),
+                opacity 400ms var(--ease-arch);
+}
+[data-anim="meta-row"].in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Photo nav arrows — scale on hover, arrow nudge */
+.photo-nav {
+    transition: transform 200ms var(--ease-arch) !important;
+}
+.photo-nav.next:hover {
+    transform: translateY(-50%) scale(1.15) !important;
+}
+.photo-nav.prev:hover {
+    transform: translateY(-50%) scale(1.15) !important;
+}
+
+/* Tab indicator — refine easing */
+.tab-indicator {
+    transition: left 300ms var(--ease-arch), width 300ms var(--ease-arch) !important;
+}
+
+/* ================================================================
+   7. DESIGN PROCESS TIMELINE
+   ================================================================ */
+
+/* Timeline horizontal line — draws left to right, 1000ms */
+[data-anim="timeline-draw"] {
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 1000ms var(--ease-arch);
+}
+[data-anim="timeline-draw"].in-view {
+    transform: scaleX(1);
+}
+
+/* Step node — scale pop-in */
+[data-anim="step-node"] {
+    transform: scale(0);
+    transition: transform 400ms var(--ease-arch);
+}
+[data-anim="step-node"].in-view {
+    transform: scale(1);
+}
+
+/* Step content — fade up */
+.step-content-anim {
+    opacity: 0;
+    transform: translateY(15px);
+    transition: transform 400ms var(--ease-arch),
+                opacity 400ms var(--ease-arch);
+}
+.step-content-anim.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Step hover — node fill, dashed line drop */
+.step-node {
+    transition: background-color 250ms var(--ease-arch),
+                border-color 250ms var(--ease-arch) !important;
+}
+.step-title {
+    transition: color 200ms var(--ease-arch) !important;
+}
+.step-dash {
+    transition: height 300ms var(--ease-arch) !important;
+}
+
+/* ================================================================
+   8. SERVICES GRID
+   ================================================================ */
+
+/* Service cell content — fade up */
+.service-content-anim {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: transform 500ms var(--ease-arch),
+                opacity 500ms var(--ease-arch);
+}
+.service-content-anim.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Service cell hover — refine easing */
+.service-cell::before {
+    transition: transform 300ms var(--ease-arch) !important;
+}
+.service-number {
+    transition: transform 200ms var(--ease-arch), color 250ms var(--ease-arch) !important;
+}
+
+/* ================================================================
+   9. SKILLS PAGE
+   ================================================================ */
+
+/* Software tiles — scale(0.85) fade-in, diagonal stagger */
+[data-anim="tile-reveal"] {
+    transform: scale(0.85);
+    transition: transform 500ms var(--ease-arch),
+                opacity 500ms var(--ease-arch);
+}
+[data-anim="tile-reveal"].in-view {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Tile hover — scale to 1.08 + subtle shadow */
+.software-tile {
+    transition: background-color 200ms var(--ease-arch),
+                transform 200ms var(--ease-arch),
+                box-shadow 200ms var(--ease-arch) !important;
+}
+.software-tile:hover {
+    transform: scale(1.08) !important;
+    box-shadow: 0 4px 20px rgba(28, 27, 27, 0.08) !important;
+}
+
+/* Progress bar fill — animate from 0 to target width */
+.proficiency-bar-fill {
+    transition: width 800ms var(--ease-arch);
+}
+.proficiency-bar-fill.bar-animate {
+    /* width is set by JS */
+}
+
+/* Drawing skills — slower, more deliberate */
+.drawing-skills .proficiency-bar-fill {
+    transition: width 1000ms var(--ease-arch);
+}
+
+/* ================================================================
+   10. TESTIMONIALS
+   ================================================================ */
+
+/* Quote mark — scale + rotation */
+[data-anim="quote-mark"] {
+    transform: scale(0) rotate(-10deg);
+    transition: transform 400ms var(--ease-arch),
+                opacity 400ms var(--ease-arch);
+}
+[data-anim="quote-mark"].in-view {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+}
+
+/* Quote lines — per-line fade up */
+.quote-line {
+    display: block;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: transform 500ms var(--ease-arch),
+                opacity 500ms var(--ease-arch);
+}
+.quote-line.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Author slide in from left */
+[data-anim="author-slide"] {
+    transform: translateX(-20px);
+    transition: transform 400ms var(--ease-arch),
+                opacity 400ms var(--ease-arch);
+}
+[data-anim="author-slide"].in-view {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* ================================================================
+   11. GALLERY
+   ================================================================ */
+
+/* Gallery items — cascade reveal */
+[data-anim="gallery-cascade"] {
+    transform: translateY(20px);
+    transition: transform 500ms var(--ease-arch),
+                opacity 500ms var(--ease-arch);
+}
+[data-anim="gallery-cascade"].in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Gallery filter transition */
+.gallery-item.filter-out {
+    transform: scale(0.95) !important;
+    opacity: 0 !important;
+    pointer-events: none;
+    transition: transform 300ms var(--ease-arch),
+                opacity 300ms var(--ease-arch) !important;
+}
+.gallery-item.filter-in {
+    transform: scale(1) !important;
+    opacity: 1 !important;
+    transition: transform 400ms var(--ease-arch),
+                opacity 400ms var(--ease-arch) !important;
+}
+
+/* Clockwise border draw on hover — clip-path reveals border frame */
+@keyframes draw-border-cw {
+    0%   { clip-path: polygon(0 0, 0 0, 0 0, 0 0, 0 0); }
+    25%  { clip-path: polygon(0 0, 100% 0, 100% 0, 100% 0, 0 0); }
+    50%  { clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 100%, 0 0); }
+    75%  { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 100%); }
+    100% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 0); }
+}
+
+.gallery-item::after {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    border: 1px solid rgba(244, 242, 237, 0.4);
+    clip-path: polygon(0 0, 0 0, 0 0, 0 0, 0 0);
+    opacity: 1;
+    z-index: 2;
+    pointer-events: none;
+    transition: none;
+}
+.gallery-item:hover::after {
+    animation: draw-border-cw 400ms var(--ease-arch) forwards;
+}
+
+/* Gallery filter button — active underline draws in */
+.gallery-filter-btn::after {
+    transition: transform 200ms var(--ease-arch) !important;
+}
+
+/* Gallery overlay + title refinements */
+.gallery-overlay {
+    transition: opacity 250ms var(--ease-arch) !important;
+}
+.gallery-item-title {
+    transition: transform 300ms var(--ease-arch) !important;
+}
+
+/* ================================================================
+   12. CONTACT PAGE
+   ================================================================ */
+
+/* Contact heading words — heavy serif, translateY(50px) */
+.contact-word {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: transform var(--dur-reveal) var(--ease-arch),
+                opacity var(--dur-reveal) var(--ease-arch);
+}
+.contact-word.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Vertical divider — draw top to bottom, 600ms */
+[data-anim="divider-draw"] {
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 600ms var(--ease-arch);
+}
+[data-anim="divider-draw"].in-view {
+    transform: scaleY(1);
+}
+
+/* Contact detail blocks — fade in top to bottom */
+[data-anim="contact-block"] {
+    transform: translateY(20px);
+    transition: transform 500ms var(--ease-arch),
+                opacity 500ms var(--ease-arch);
+}
+[data-anim="contact-block"].in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Form field focus — border transition refined */
+.form-input,
+.form-textarea {
+    transition: border-color 250ms var(--ease-arch) !important;
+}
+
+/* Form label float — refined */
+.form-label {
+    transition: transform 200ms var(--ease-arch), font-size 200ms var(--ease-arch) !important;
+}
+
+/* Submit button — hover fill with architectural easing */
+.submit-btn {
+    position: relative;
+    overflow: hidden;
+}
+.submit-btn::before {
+    transition: transform 300ms var(--ease-arch) !important;
+}
+.submit-btn .arrow {
+    transition: transform 200ms var(--ease-arch) !important;
+}
+
+/* Submit button states — sending / sent */
+.submit-btn .btn-text {
+    transition: opacity 200ms var(--ease-arch);
+}
+.submit-btn .btn-sending,
+.submit-btn .btn-sent {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 200ms var(--ease-arch);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+}
+.submit-btn.sending .btn-text { opacity: 0; }
+.submit-btn.sending .btn-sending { opacity: 1; }
+.submit-btn.sent .btn-text { opacity: 0; }
+.submit-btn.sent .btn-sent { opacity: 1; }
+
+@keyframes pulse-dot {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
+.pulse-dot {
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: currentColor;
+    animation: pulse-dot 1s ease-in-out infinite;
+}
+.pulse-dot:nth-child(2) { animation-delay: 0.15s; }
+.pulse-dot:nth-child(3) { animation-delay: 0.3s; }
+
+/* SVG checkmark draw */
+.checkmark-path {
+    stroke-dasharray: 24;
+    stroke-dashoffset: 24;
+    transition: stroke-dashoffset 400ms var(--ease-arch);
+}
+.submit-btn.sent .checkmark-path {
+    stroke-dashoffset: 0;
+}
+
+/* ================================================================
+   13. CUSTOM CURSOR
+   ================================================================ */
+
+.custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 12px;
+    height: 12px;
+    background-color: #1c1c1a;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10000;
+    transform: translate(-50%, -50%);
+    transition: width 250ms var(--ease-arch),
+                height 250ms var(--ease-arch),
+                background-color 250ms var(--ease-arch),
+                border-color 250ms var(--ease-arch);
+    mix-blend-mode: difference;
+    will-change: left, top;
+    border: 1.5px solid transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-cursor.expanded {
+    width: 40px;
+    height: 40px;
+    background-color: transparent;
+    border-color: #fff;
+}
+
+.custom-cursor.text-cursor {
+    width: 56px;
+    height: 56px;
+    background-color: rgba(28, 28, 26, 0.9);
+    border-color: transparent;
+    mix-blend-mode: normal;
+}
+
+.custom-cursor .cursor-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 7px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #f4f2ed;
+    opacity: 0;
+    transition: opacity 200ms var(--ease-arch);
+    position: absolute;
+    white-space: nowrap;
+}
+.custom-cursor.text-cursor .cursor-label {
+    opacity: 1;
+}
+
+.custom-cursor .cursor-icon {
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 200ms var(--ease-arch);
+    position: absolute;
+}
+.custom-cursor.icon-cursor .cursor-icon {
+    opacity: 1;
+}
+.custom-cursor.icon-cursor {
+    width: 48px;
+    height: 48px;
+    background-color: rgba(28, 28, 26, 0.85);
+    border-color: transparent;
+    mix-blend-mode: normal;
+}
+
+/* Hide on touch / reduced-motion */
+@media (hover: none) {
+    .custom-cursor { display: none !important; }
+}
+
+body.has-custom-cursor,
+body.has-custom-cursor a,
+body.has-custom-cursor button,
+body.has-custom-cursor .gallery-item,
+body.has-custom-cursor .work-row {
+    cursor: none !important;
+}
+
+/* ================================================================
+   14. PAGE TRANSITIONS
+   ================================================================ */
+
+.page-transition-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f4f2ed;
+    z-index: 99999;
+    pointer-events: none;
+}
+.page-transition-overlay.hidden {
+    transform: translateX(-101%);
+}
+
+@keyframes wipe-in {
+    from { transform: translateX(-101%); }
+    to   { transform: translateX(0); }
+}
+@keyframes wipe-out {
+    from { transform: translateX(0); }
+    to   { transform: translateX(101%); }
+}
+
+.page-transition-overlay.wipe-in {
+    animation: wipe-in 400ms var(--ease-arch) forwards;
+}
+.page-transition-overlay.wipe-out {
+    animation: wipe-out 400ms var(--ease-arch) forwards;
+}
+
+/* ================================================================
+   15. SVG DRAW-ON EFFECT
+   ================================================================ */
+
+.svg-draw-path {
+    transition: stroke-dashoffset var(--ease-arch);
+}
+.svg-draw-path.in-view {
+    stroke-dashoffset: 0 !important;
+}
+
+/* ================================================================
+   16. PREFERS REDUCED MOTION
+   ================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    [data-anim],
+    .hero-word,
+    .quote-line,
+    .contact-word,
+    .title-half-left,
+    .title-half-right,
+    .step-content-anim,
+    .service-content-anim {
+        opacity: 1 !important;
+        transform: none !important;
+        clip-path: none !important;
+    }
+    .custom-cursor { display: none !important; }
+    body.has-custom-cursor,
+    body.has-custom-cursor * { cursor: auto !important; }
+}

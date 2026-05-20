@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ar. Binoy K.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="animations.css">
+    <style>
+        :root {
+            --color-bg: #f4f2ed;
+            --color-text: #1c1b1b;
+            --color-accent: #8c7b5e;
+            --color-muted: #a1a1a1;
+            --color-line: rgba(28, 27, 27, 0.12);
+            --color-dark: #1c1c1a;
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --font-sans: 'Inter', -apple-system, sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            font-family: var(--font-sans);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .navbar {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            padding: 20px 4rem; display: flex; justify-content: space-between; align-items: center;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            border-bottom: 1px solid transparent;
+        }
+        .navbar.scrolled {
+            background-color: rgba(244, 242, 237, 0.92);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border-bottom-color: var(--color-line);
+        }
+        .nav-logo { font-family: var(--font-serif); font-size: 20px; color: var(--color-text); text-decoration: none; letter-spacing: -0.01em; }
+        .nav-links { display: flex; gap: 32px; list-style: none; }
+        .nav-links a { font-family: var(--font-sans); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-text); text-decoration: none; position: relative; padding-bottom: 4px; }
+        .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px; background-color: var(--color-text); transform: scaleX(0); transform-origin: left; transition: transform 0.25s ease; }
+        .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
+        .nav-links a.active { color: var(--color-accent); }
+        .nav-links a.active::after { background-color: var(--color-accent); }
+
+        .hero { min-height: 100vh; padding: 0 4rem; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 4rem; }
+        .hero-content { padding-top: 80px; }
+        .hero-label { font-family: var(--font-sans); font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-muted); margin-bottom: 32px; }
+        .hero-heading { font-family: var(--font-serif); font-size: 52px; font-weight: 400; line-height: 1.15; letter-spacing: -0.02em; color: var(--color-text); margin-bottom: 32px; }
+        .hero-education { font-family: var(--font-serif); font-size: 16px; font-style: italic; color: var(--color-muted); margin-bottom: 48px; line-height: 1.6; }
+        .hero-social { display: flex; align-items: center; gap: 0; }
+        .hero-social a { font-family: var(--font-sans); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-text); text-decoration: none; transition: color 0.25s ease; }
+        .hero-social a:hover { color: var(--color-accent); }
+        .hero-social-separator { font-family: var(--font-sans); font-size: 11px; color: var(--color-muted); margin: 0 20px; user-select: none; }
+        .hero-image-wrapper { position: relative; height: 100vh; overflow: hidden; align-self: stretch; }
+        .hero-image-wrapper img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
+
+        .stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); padding: 40px 4rem; border-top: 1px solid var(--color-line); border-bottom: 1px solid var(--color-line); }
+        .stat-item { text-align: center; }
+        .stat-number { font-family: var(--font-serif); font-size: 36px; color: var(--color-text); margin-bottom: 8px; }
+        .stat-label { font-family: var(--font-sans); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-muted); }
+
+        .section { padding: 8rem 4rem; }
+        .section-label { font-family: var(--font-sans); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-muted); margin-bottom: 16px; }
+        .section-heading { font-family: var(--font-serif); font-size: 48px; font-weight: 400; line-height: 1.2; color: var(--color-text); margin-bottom: 24px; }
+        .section-line { width: 100%; height: 1px; background-color: var(--color-line); margin: 24px 0; }
+
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+        .about-text { font-family: var(--font-sans); font-size: 16px; line-height: 1.7; color: var(--color-text); }
+        .about-text p { margin-bottom: 24px; }
+        .about-philosophy { padding-left: 2rem; border-left: 1px solid var(--color-line); }
+        .about-quote { font-family: var(--font-serif); font-size: 24px; font-style: italic; line-height: 1.5; color: var(--color-accent); }
+
+        .works-list { margin-top: 40px; }
+        .work-row { display: grid; grid-template-columns: 60px 1fr 200px 120px; align-items: center; padding: 24px 0; border-top: 1px solid var(--color-line); cursor: pointer; position: relative; transition: color 0.3s ease; text-decoration: none; color: var(--color-text); }
+        .work-row::before { content: ''; position: absolute; top: 0; left: -4rem; right: -4rem; bottom: 0; background-color: var(--color-dark); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease; z-index: -1; }
+        .work-row:hover::before { transform: scaleX(1); }
+        .work-row:hover { color: var(--color-bg); }
+        .work-number { font-family: var(--font-sans); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; color: var(--color-muted); transition: transform 0.25s ease, color 0.3s ease; }
+        .work-row:hover .work-number { transform: translateX(-8px); color: var(--color-bg); }
+        .work-title { font-family: var(--font-serif); font-size: 24px; font-weight: 400; transition: color 0.3s ease; }
+        .work-row:hover .work-title { color: var(--color-bg); }
+        .work-category { font-family: var(--font-sans); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-muted); transition: color 0.3s ease; }
+        .work-row:hover .work-category { color: rgba(244, 242, 237, 0.6); }
+        .work-status { font-family: var(--font-sans); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 12px; border: 1px solid; text-align: center; }
+        .work-status.completed { color: var(--color-accent); border-color: var(--color-accent); }
+        .work-status.ongoing { color: var(--color-muted); border-color: var(--color-muted); }
+        .work-arrow { opacity: 0; transform: translateX(-10px); transition: opacity 0.25s ease, transform 0.25s ease; margin-left: 12px; font-size: 18px; }
+        .work-row:hover .work-arrow { opacity: 1; transform: translateX(0); color: var(--color-bg); }
+
+        .testimonial-block { max-width: 700px; }
+        .testimonial-quote-mark { font-family: var(--font-serif); font-size: 80px; line-height: 1; color: var(--color-accent); margin-bottom: -20px; }
+        .testimonial-text { font-family: var(--font-serif); font-size: 24px; font-style: italic; line-height: 1.6; color: var(--color-text); margin-bottom: 24px; }
+        .testimonial-author { font-family: var(--font-sans); font-size: 14px; color: var(--color-muted); }
+        .testimonial-author strong { color: var(--color-text); font-weight: 600; }
+
+        .gallery-filters { display: flex; gap: 24px; margin-bottom: 40px; }
+        .gallery-filter-btn { font-family: var(--font-sans); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-muted); background: none; border: none; cursor: pointer; padding-bottom: 8px; position: relative; transition: color 0.2s ease; }
+        .gallery-filter-btn.active { color: var(--color-text); }
+        .gallery-filter-btn::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px; background-color: var(--color-text); transform: scaleX(0); transform-origin: left; transition: transform 0.2s ease; }
+        .gallery-filter-btn.active::after { transform: scaleX(1); }
+        .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+        .gallery-item { position: relative; aspect-ratio: 4/3; overflow: hidden; cursor: pointer; }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .gallery-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(28, 28, 26, 0.6); display: flex; flex-direction: column; justify-content: flex-end; padding: 24px; opacity: 0; transition: opacity 0.25s ease; }
+        .gallery-item:hover .gallery-overlay { opacity: 1; }
+        .gallery-item-title { font-family: var(--font-serif); font-size: 18px; color: var(--color-bg); transform: translateY(10px); transition: transform 0.3s ease; }
+        .gallery-item:hover .gallery-item-title { transform: translateY(0); }
+        .gallery-item-label { font-family: var(--font-sans); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(244, 242, 237, 0.6); margin-top: 4px; }
+
+        .footer { padding: 40px 4rem; border-top: 1px solid var(--color-line); display: flex; justify-content: space-between; align-items: center; }
+        .footer-text { font-family: var(--font-sans); font-size: 11px; color: var(--color-muted); letter-spacing: 0.05em; }
+        .footer-links { display: flex; gap: 24px; }
+        .footer-links a { font-family: var(--font-sans); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-muted); text-decoration: none; transition: color 0.2s ease; }
+        .footer-links a:hover { color: var(--color-text); }
+
+        @media (max-width: 768px) {
+            .hero { grid-template-columns: 1fr; padding: 0 1.5rem; min-height: auto; padding-top: 120px; }
+            .hero-heading { font-size: 42px; }
+            .hero-image-wrapper { height: 50vh; }
+            .stats-bar { grid-template-columns: repeat(2, 1fr); padding: 24px 1.5rem; gap: 24px; }
+            .section { padding: 4rem 1.5rem; }
+            .section-heading { font-size: 32px; }
+            .about-grid { grid-template-columns: 1fr; }
+            .work-row { grid-template-columns: 40px 1fr 100px; }
+            .work-category { display: none; }
+            .gallery-grid { grid-template-columns: 1fr 1fr; }
+            .navbar { padding: 16px 1.5rem; }
+            .footer { flex-direction: column; gap: 16px; padding: 24px 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar" id="navbar" data-anim="navbar-enter">
+        <a href="index.html" class="nav-logo">Ar. Binoy K.</a>
+        <ul class="nav-links">
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="project.html">Works</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="skills.html">Skills</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <p class="hero-label" data-anim="hero-subtext">Architect · Palakkad, Kerala</p>
+            <h1 class="hero-heading" data-anim="hero-words">Ar. Binoy K. is an Architect crafting spaces that breathe.</h1>
+            <p class="hero-education" data-anim="hero-education">Global Institute of Architecture, Palakkad — 2024</p>
+            <div class="hero-social">
+                <a href="#" data-anim="hero-social">Instagram</a>
+                <span class="hero-social-separator">—</span>
+                <a href="#" data-anim="hero-social">LinkedIn</a>
+                <span class="hero-social-separator">—</span>
+                <a href="#" data-anim="hero-social">Behance</a>
+            </div>
+        </div>
+        <div class="hero-image-wrapper" data-anim="portrait-reveal">
+            <img src="images/Ar. Binoy K. Portrait.png" alt="Ar. Binoy K. Portrait" />
+        </div>
+    </section>
+
+    <div class="stats-bar">
+        <div class="stat-item" data-anim="stat-reveal">
+            <div class="stat-number">8+</div>
+            <div class="stat-label">Years Experience</div>
+        </div>
+        <div class="stat-item" data-anim="stat-reveal">
+            <div class="stat-number">50+</div>
+            <div class="stat-label">Projects Completed</div>
+        </div>
+        <div class="stat-item" data-anim="stat-reveal">
+            <div class="stat-number">3</div>
+            <div class="stat-label">Awards Won</div>
+        </div>
+        <div class="stat-item" data-anim="stat-reveal">
+            <div class="stat-number">35+</div>
+            <div class="stat-label">Happy Clients</div>
+        </div>
+    </div>
+
+    <section class="section" id="about">
+        <p class="section-label" data-anim="label-draft">01 · About</p>
+        <h2 class="section-heading" data-anim="heading-reveal">Architecture Is the<br>Thoughtful Making of Space</h2>
+        <div class="section-line" data-anim="line-draw"></div>
+        <div class="about-grid">
+            <div class="about-text">
+                <p data-anim="body-reveal">With over eight years of practice rooted in the landscapes of Kerala, I approach architecture as a dialogue between the built environment and the natural world. Every project begins with listening — to the site, the climate, and the people who will inhabit the space.</p>
+                <p data-anim="body-reveal">My work spans residential, commercial, and institutional projects, each driven by a commitment to sustainability, material honesty, and spatial clarity. From vernacular reinterpretations to contemporary tropical designs, I seek to create structures that are both of their place and timeless.</p>
+            </div>
+            <div class="about-philosophy" data-anim="fade-up">
+                <p class="about-quote">"A building should appear to grow easily from its site and be shaped to harmonize with its surroundings."</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="works">
+        <p class="section-label" data-anim="label-draft">02 · Selected Works</p>
+        <h2 class="section-heading" data-anim="heading-reveal">Projects</h2>
+        <div class="section-line" data-anim="line-draw"></div>
+        <div class="works-list">
+            <a href="project.html" class="work-row" data-anim="work-row-reveal">
+                <span class="work-number">01</span>
+                <span class="work-title">Kannur Villa Residence</span>
+                <span class="work-category">Residential</span>
+                <span class="work-status completed">Completed</span>
+                <span class="work-arrow">→</span>
+            </a>
+            <a href="#" class="work-row" data-anim="work-row-reveal">
+                <span class="work-number">02</span>
+                <span class="work-title">Thalassery Heritage Centre</span>
+                <span class="work-category">Institutional</span>
+                <span class="work-status completed">Completed</span>
+                <span class="work-arrow">→</span>
+            </a>
+            <a href="#" class="work-row" data-anim="work-row-reveal">
+                <span class="work-number">03</span>
+                <span class="work-title">Wayanad Eco Lodge</span>
+                <span class="work-category">Hospitality</span>
+                <span class="work-status ongoing">Ongoing</span>
+                <span class="work-arrow">→</span>
+            </a>
+            <a href="#" class="work-row" data-anim="work-row-reveal">
+                <span class="work-number">04</span>
+                <span class="work-title">Kozhikode Office Complex</span>
+                <span class="work-category">Commercial</span>
+                <span class="work-status completed">Completed</span>
+                <span class="work-arrow">→</span>
+            </a>
+            <a href="#" class="work-row" data-anim="work-row-reveal">
+                <span class="work-number">05</span>
+                <span class="work-title">Mattannur Community Library</span>
+                <span class="work-category">Public</span>
+                <span class="work-status ongoing">Ongoing</span>
+                <span class="work-arrow">→</span>
+            </a>
+        </div>
+    </section>
+
+    <section class="section" id="testimonials">
+        <p class="section-label" data-anim="label-draft">03 · Testimonials</p>
+        <h2 class="section-heading" data-anim="heading-reveal">Client Words</h2>
+        <div class="section-line" data-anim="line-draw"></div>
+        <div class="testimonial-block">
+            <div class="testimonial-quote-mark" data-anim="quote-mark">"</div>
+            <p class="testimonial-text">Binoy understood our vision from the very first conversation. He designed a home that feels like it belongs to the land — cool in the summers, warm in the monsoons, and deeply personal in every detail.</p>
+            <p class="testimonial-author" data-anim="author-slide"><strong>Rajeev & Priya Menon</strong> — Kannur Villa Residence</p>
+        </div>
+    </section>
+
+    <section class="section" id="gallery">
+        <p class="section-label" data-anim="label-draft">04 · Gallery</p>
+        <h2 class="section-heading" data-anim="heading-reveal">Visual Archive</h2>
+        <div class="section-line" data-anim="line-draw"></div>
+        <div class="gallery-filters">
+            <button class="gallery-filter-btn active">All</button>
+            <button class="gallery-filter-btn">Residential</button>
+            <button class="gallery-filter-btn">Institutional</button>
+            <button class="gallery-filter-btn">Interiors</button>
+            <button class="gallery-filter-btn">Drawings</button>
+        </div>
+        <div class="gallery-grid">
+            <div class="gallery-item" data-anim="gallery-cascade">
+                <img src="images/Kannur Villa exterior.jpg" alt="Kannur Villa exterior">
+                <div class="gallery-overlay">
+                    <span class="gallery-item-title">Kannur Villa</span>
+                    <span class="gallery-item-label">Residential · 2023</span>
+                </div>
+            </div>
+            <div class="gallery-item" data-anim="gallery-cascade">
+                <img src="images/Heritage centre courtyard.jpg" alt="Heritage Centre courtyard">
+                <div class="gallery-overlay">
+                    <span class="gallery-item-title">Heritage Centre</span>
+                    <span class="gallery-item-label">Institutional · 2022</span>
+                </div>
+            </div>
+            <div class="gallery-item" data-anim="gallery-cascade">
+                <img src="images/interior living space.jpg" alt="Interior living space">
+                <div class="gallery-overlay">
+                    <span class="gallery-item-title">Living Space</span>
+                    <span class="gallery-item-label">Interior · 2023</span>
+                </div>
+            </div>
+            <div class="gallery-item" data-anim="gallery-cascade">
+                <img src="images/Eco Lodge concept render.jpg" alt="Eco Lodge concept render">
+                <div class="gallery-overlay">
+                    <span class="gallery-item-title">Eco Lodge</span>
+                    <span class="gallery-item-label">Hospitality · 2024</span>
+                </div>
+            </div>
+            <div class="gallery-item" data-anim="gallery-cascade">
+                <img src="images/architectural section drawing.jpg" alt="Architectural section drawing">
+                <div class="gallery-overlay">
+                    <span class="gallery-item-title">Section Drawing</span>
+                    <span class="gallery-item-label">Drawing · 2022</span>
+                </div>
+            </div>
+            <div class="gallery-item" data-anim="gallery-cascade">
+                <img src="images/Office complex facade.jpg" alt="Office complex facade">
+                <div class="gallery-overlay">
+                    <span class="gallery-item-title">Office Facade</span>
+                    <span class="gallery-item-label">Commercial · 2021</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p class="footer-text">© 2024 Ar. Binoy K. — All rights reserved.</p>
+        <div class="footer-links">
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+            <a href="#">Sitemap</a>
+        </div>
+    </footer>
+
+    <script src="animations.js" defer></script>
+</body>
+</html>
